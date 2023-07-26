@@ -10,7 +10,7 @@ The primary reference for this project is the blog post by GeekTutu: [Building a
 
 ## Development Plan
 
-- [ ] Implement LRU cache eviction algorithm.
+- [x] Implement LRU cache eviction algorithm.
 - [ ] Implement concurrent control of LRU cache using sync.Mutex.
 - [ ] Implement the core data structure, Group, which calls the callback function to obtain the source data when the cache is not present.
 - [ ] Set up an HTTP Server.

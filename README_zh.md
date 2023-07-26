@@ -9,7 +9,7 @@ ggt-dist-cache是模仿[groupcache](https://github.com/golang/groupcache)手写�
 
 ## 开发计划
 
-- [ ] 实现 LRU 缓存淘汰算法
+- [x] 实现 LRU 缓存淘汰算法
 - [ ] 利用 sync.Mutex 互斥锁，实现 LRU 缓存的并发控制
 - [ ] 实现核心数据结构 Group，缓存不存在时，调用回调函数获取源数据
 - [ ] 搭建 HTTP Server
