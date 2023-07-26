@@ -68,6 +68,9 @@ func (c *Cache) Add(key string, value Value) {
 		c.cache[key] = ele
 		c.nBytes += int64(len(key)) + int64(value.Len())
 	}
+	for c.maxBytes != 0 && c.maxBytes < c.nBytes {
+		c.RemoveOldest()
+	}
 }
 
 // Len returns the number of cache entries.
