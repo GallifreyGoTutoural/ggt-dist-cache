@@ -11,10 +11,10 @@ The primary reference for this project is the blog post by GeekTutu: [Building a
 ## Development Plan
 
 - [x] Implement LRU cache eviction algorithm.
-- [ ] Implement concurrent control of LRU cache using sync.Mutex.
-- [ ] Implement the core data structure, Group, which calls the callback function to obtain the source data when the cache is not present.
-- [ ] Set up an HTTP Server.
-- [ ] Start the HTTP Server and test the API.
+- [x] Implement concurrent control of LRU cache using sync.Mutex.
+- [x] Implement the core data structure, Group, which calls the callback function to obtain the source data when the cache is not present.
+- [x] Set up an HTTP Server.
+- [x] Start the HTTP Server and test the API.
 - [ ] Implement consistent hashing.
 - [ ] Register nodes and select nodes using the consistent hashing algorithm.
 - [ ] Prevent cache breakdown using singleflight.
