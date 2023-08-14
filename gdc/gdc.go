@@ -20,6 +20,7 @@ type Group struct {
 	name      string
 	getter    Getter
 	mainCache cache
+	peers     PeerPicker
 }
 
 var (
@@ -56,14 +57,25 @@ func (g *Group) Get(key string) (ByteView, error) {
 	if key == "" {
 		return ByteView{}, nil
 	}
+	//if mainCache has the key, return it
 	if v, ok := g.mainCache.get(key); ok {
 		return v, nil
 	}
+	//else load it
 	return g.load(key)
 }
 
 // load value for a key from cache
 func (g *Group) load(key string) (ByteView, error) {
+	//if peers is not nil, use PeerPicker to get value from remote peer
+	if g.peers != nil {
+		if peer, ok := g.peers.PickPeer(key); ok {
+			if value, err := g.getFromPeer(peer, key); err == nil {
+				return value, nil
+			}
+		}
+	}
+	//else use local getter to get value
 	return g.getLocally(key)
 }
 
@@ -81,4 +93,31 @@ func (g *Group) getLocally(key string) (ByteView, error) {
 // populateCache value for a key from cache
 func (g *Group) populateCache(key string, value ByteView) {
 	g.mainCache.add(key, value)
+}
+
+// RegisterPeerPicker registers a PeerPicker for choosing remote peer
+func (g *Group) RegisterPeerPicker(picker PeerPicker) {
+	if g.peers != nil {
+		panic("RegisterPeerPicker called more than once")
+	}
+	g.peers = picker
+}
+
+// PickPeer picks a peer according to key
+func (g *Group) PickPeer(key string) (PeerGetter, bool) {
+	if g.peers == nil {
+		return nil, false
+	}
+	return g.peers.PickPeer(key)
+}
+
+// getFromPeer gets value from remote peer
+func (g *Group) getFromPeer(peer PeerGetter, key string) (ByteView, error) {
+	bytes, err := peer.Get(g.name, key)
+	if err != nil {
+		return ByteView{}, err
+	}
+	value := ByteView{b: cloneBytes(bytes)}
+	g.populateCache(key, value)
+	return value, nil
 }
