@@ -17,5 +17,5 @@ The primary reference for this project is the blog post by GeekTutu: [Building a
 - [x] Start the HTTP Server and test the API.
 - [x] Implement consistent hashing.
 - [x] Register nodes and select nodes using the consistent hashing algorithm.
-- [ ] Prevent cache breakdown using singleflight.
+- [x] Prevent cache breakdown using singleflight.
 - [ ] Use protobuf for inter-node communication and message encoding.
