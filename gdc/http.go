@@ -134,4 +134,5 @@ func (p *HTTPPool) PickPeer(key string) (PeerGetter, bool) {
 	return nil, false
 }
 
-//var _ PeerPicker = (*HTTPPool)(nil)
+// ensure HTTPPool implements PeerPicker
+var _ PeerPicker = (*HTTPPool)(nil)
