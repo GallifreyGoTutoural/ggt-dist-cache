@@ -15,7 +15,7 @@ The primary reference for this project is the blog post by GeekTutu: [Building a
 - [x] Implement the core data structure, Group, which calls the callback function to obtain the source data when the cache is not present.
 - [x] Set up an HTTP Server.
 - [x] Start the HTTP Server and test the API.
-- [ ] Implement consistent hashing.
-- [ ] Register nodes and select nodes using the consistent hashing algorithm.
+- [x] Implement consistent hashing.
+- [x] Register nodes and select nodes using the consistent hashing algorithm.
 - [ ] Prevent cache breakdown using singleflight.
 - [ ] Use protobuf for inter-node communication and message encoding.

@@ -14,8 +14,8 @@ ggt-dist-cache是模仿[groupcache](https://github.com/golang/groupcache)手写�
 - [x] 实现核心数据结构 Group，缓存不存在时，调用回调函数获取源数据
 - [x] 搭建 HTTP Server
 - [x] 启动 HTTP Server 测试API
-- [ ] 实现一致性哈希代码
-- [ ] 注册节点，借助一致性哈希算法选择节点
+- [x] 实现一致性哈希代码
+- [x] 注册节点，借助一致性哈希算法选择节点
 - [ ] 使用 singleflight 防止缓存击穿
 - [ ] 使用 protobuf 进行节点间通信，编码报文
 
