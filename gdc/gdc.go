@@ -1,6 +1,7 @@
 package gdc
 
 import (
+	pb "github.com/GallifreyGoTutoural/ggt-dist-cache/gdccachepb"
 	"github.com/GallifreyGoTutoural/ggt-dist-cache/singleflight"
 	"sync"
 )
@@ -127,11 +128,14 @@ func (g *Group) PickPeer(key string) (PeerGetter, bool) {
 
 // getFromPeer gets value from remote peer
 func (g *Group) getFromPeer(peer PeerGetter, key string) (ByteView, error) {
-	bytes, err := peer.Get(g.name, key)
+	req := &pb.Request{
+		Group: g.name,
+		Key:   key,
+	}
+	res := &pb.Response{}
+	err := peer.Get(req, res)
 	if err != nil {
 		return ByteView{}, err
 	}
-	value := ByteView{b: cloneBytes(bytes)}
-	g.populateCache(key, value)
-	return value, nil
+	return ByteView{b: res.Value}, nil
 }

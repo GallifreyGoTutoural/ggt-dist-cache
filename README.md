@@ -18,4 +18,4 @@ The primary reference for this project is the blog post by GeekTutu: [Building a
 - [x] Implement consistent hashing.
 - [x] Register nodes and select nodes using the consistent hashing algorithm.
 - [x] Prevent cache breakdown using singleflight.
-- [ ] Use protobuf for inter-node communication and message encoding.
+- [x] Use protobuf for inter-node communication and message encoding.

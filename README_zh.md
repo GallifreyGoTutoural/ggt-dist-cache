@@ -17,5 +17,5 @@ ggt-dist-cache是模仿[groupcache](https://github.com/golang/groupcache)手写�
 - [x] 实现一致性哈希代码
 - [x] 注册节点，借助一致性哈希算法选择节点
 - [x] 使用 singleflight 防止缓存击穿
-- [ ] 使用 protobuf 进行节点间通信，编码报文
+- [x] 使用 protobuf 进行节点间通信，编码报文
 
