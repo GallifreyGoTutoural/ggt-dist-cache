@@ -1,6 +1,9 @@
 package gdc
 
-import "sync"
+import (
+	"github.com/GallifreyGoTutoural/ggt-dist-cache/singleflight"
+	"sync"
+)
 
 // Getter is the interface that must be implemented to fetch data.
 type Getter interface {
@@ -21,6 +24,7 @@ type Group struct {
 	getter    Getter
 	mainCache cache
 	peers     PeerPicker
+	loader    *singleflight.Group
 }
 
 var (
@@ -39,6 +43,7 @@ func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
 		name:      name,
 		getter:    getter,
 		mainCache: cache{cacheBytes: cacheBytes},
+		loader:    &singleflight.Group{},
 	}
 	groups[name] = g
 	return g
@@ -67,16 +72,25 @@ func (g *Group) Get(key string) (ByteView, error) {
 
 // load value for a key from cache
 func (g *Group) load(key string) (ByteView, error) {
-	//if peers is not nil, use PeerPicker to get value from remote peer
-	if g.peers != nil {
-		if peer, ok := g.peers.PickPeer(key); ok {
-			if value, err := g.getFromPeer(peer, key); err == nil {
-				return value, nil
+	//use singleflight to ensure that each key is only fetched once
+	view, err := g.loader.Do(key, func() (interface{}, error) {
+		//if peers is not nil, use PeerPicker to get value from remote peer
+		if g.peers != nil {
+			if peer, ok := g.peers.PickPeer(key); ok {
+				if value, err := g.getFromPeer(peer, key); err == nil {
+					return value, nil
+				}
 			}
 		}
+
+		//else use local getter to get value
+		return g.getLocally(key)
+	})
+	if err == nil {
+		return view.(ByteView), nil
 	}
-	//else use local getter to get value
-	return g.getLocally(key)
+	return ByteView{}, err
+
 }
 
 // getLocally value for a key from cache
